@@ -4,6 +4,7 @@ import Header from './components/Header'
 import TodoAdd from './components/TodoAdd'
 import TodoFilter from './components/TodoFilter'
 import TodoList from './components/TodoList'
+import { Item } from './types'
 
 
 function App() {
@@ -18,13 +19,27 @@ function App() {
 
   const [todo, setTodo] = useState(initialStateTodos)
 
+  const createTodo = (title: string) => {
+    const newTodo: Item = {
+      id: todo.length + 1,
+      title,
+      completed: false
+    }
+
+    setTodo([...todo, newTodo])
+  }
+
+  const removeTodo = (id: number) => {
+    setTodo(prev => prev.filter(item => item.id !== id))
+  }
+
   return (
     <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300">
       <Header />
-      <TodoAdd setTodo={setTodo} />
+      <TodoAdd createTodo={createTodo} />
 
       <main className="container mx-auto px-4">
-        <TodoList todo={todo} />
+        <TodoList todo={todo} removeTodo={removeTodo} />
       </main>
 
       <section className="container mx-auto px-4 mt-8">

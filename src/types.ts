@@ -1,4 +1,4 @@
-export type item = {
+export type Item = {
   id: number;
   title: string;
   completed: boolean;
