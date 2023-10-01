@@ -33,13 +33,22 @@ function App() {
     setTodo(prev => prev.filter(item => item.id !== id))
   }
 
+  const updateTodo = (id: number, completed: boolean) => {
+    setTodo(prev => prev.map(item => {
+      if (item.id === id) {
+        return { ...item, completed: !item.completed };
+      }
+      return item;
+    }));
+  }
+
   return (
     <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300">
       <Header />
       <TodoAdd createTodo={createTodo} />
 
       <main className="container mx-auto px-4">
-        <TodoList todo={todo} removeTodo={removeTodo} />
+        <TodoList todo={todo} removeTodo={removeTodo} updateTodo={updateTodo} />
       </main>
 
       <section className="container mx-auto px-4 mt-8">
