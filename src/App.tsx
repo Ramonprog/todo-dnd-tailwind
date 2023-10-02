@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import TodoAdd from './components/TodoAdd'
 import TodoFilter from './components/TodoFilter'
 import TodoList from './components/TodoList'
 import { Item } from './types'
+import TodoComputed from './components/TodoComputed'
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
   ]
 
   const [todo, setTodo] = useState(initialStateTodos)
-
+  const [count, setCount] = useState(0)
   const createTodo = (title: string) => {
     const newTodo: Item = {
       id: todo.length + 1,
@@ -42,6 +43,14 @@ function App() {
     }));
   }
 
+  const clearCompleted = () => {
+    setTodo(todo.filter(item => item.completed === false))
+  }
+
+  useEffect(() => {
+    setCount(todo.filter(item => item.completed === false).length)
+  }, [todo])
+
   return (
     <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300">
       <Header />
@@ -54,6 +63,7 @@ function App() {
       <section className="container mx-auto px-4 mt-8">
         <TodoFilter />
       </section>
+      <TodoComputed counter={count} clearCompleted={clearCompleted} />
 
       <footer className="text-center mt-8">Drag and drop to reorder list</footer>
     </div>
