@@ -20,6 +20,14 @@ function App() {
 
   const [todo, setTodo] = useState(initialStateTodos)
   const [count, setCount] = useState(0)
+  const [filter, setFiler] = useState('all')
+
+  const filterTodo = todo.filter(item => {
+    if (filter === 'completed') return item.completed === true
+    if (filter === 'active') return item.completed === false
+    return item
+  })
+
   const createTodo = (title: string) => {
     const newTodo: Item = {
       id: todo.length + 1,
@@ -57,11 +65,11 @@ function App() {
       <TodoAdd createTodo={createTodo} />
 
       <main className="container mx-auto px-4">
-        <TodoList todo={todo} removeTodo={removeTodo} updateTodo={updateTodo} />
+        <TodoList todo={filterTodo} removeTodo={removeTodo} updateTodo={updateTodo} />
       </main>
 
       <section className="container mx-auto px-4 mt-8">
-        <TodoFilter />
+        <TodoFilter filter={filter} setFiler={setFiler} />
       </section>
       <TodoComputed counter={count} clearCompleted={clearCompleted} />
 
