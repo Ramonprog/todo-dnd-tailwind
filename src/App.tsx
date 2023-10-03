@@ -60,7 +60,7 @@ function App() {
   }, [todo])
 
   return (
-    <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300">
+    <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300  dark:bg-gray-950">
       <Header />
       <TodoAdd createTodo={createTodo} />
 
@@ -73,7 +73,7 @@ function App() {
       </section>
       <TodoComputed counter={count} clearCompleted={clearCompleted} />
 
-      <footer className="text-center mt-8">Drag and drop to reorder list</footer>
+      <footer className="text-center mt-8 dark:text-gray-400">Drag and drop to reorder list</footer>
     </div>
   )
 }
