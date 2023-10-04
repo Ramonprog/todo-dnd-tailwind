@@ -7,16 +7,15 @@ import TodoList from './components/TodoList'
 import { Item } from './types'
 import TodoComputed from './components/TodoComputed'
 
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 function App() {
 
-  const initialStateTodos = [
-    { id: 1, title: 'go to the gym', completed: false },
-    { id: 2, title: 'buy groceries', completed: true },
-    { id: 3, title: 'read a book', completed: false },
-    { id: 4, title: 'clean the house', completed: true },
-    { id: 5, title: 'write a report', completed: false }
-  ]
+  const initialStateTodos: Todo[] = JSON.parse(localStorage.getItem('todo') || '[]');
 
   const [todo, setTodo] = useState(initialStateTodos)
   const [count, setCount] = useState(0)
@@ -59,21 +58,28 @@ function App() {
     setCount(todo.filter(item => item.completed === false).length)
   }, [todo])
 
+  useEffect(() => {
+    localStorage.setItem('todo', JSON.stringify(todo))
+  }, [todo])
+
   return (
-    <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300  dark:bg-gray-950">
+    <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300  dark:bg-gray-950 md:bg-[url('./assets/images/bg-desktop-light.jpg')] md:dark:bg-[url('./assets/images/bg-desktop-dark.jpg')]">
       <Header />
       <TodoAdd createTodo={createTodo} />
 
-      <main className="container mx-auto px-4">
+      <main className="container mx-auto px-4 md:max-w-xl">
         <TodoList todo={filterTodo} removeTodo={removeTodo} updateTodo={updateTodo} />
       </main>
 
-      <section className="container mx-auto px-4 mt-8">
+      <section className="container mx-auto px-4 mt-8  md:max-w-xl">
         <TodoFilter filter={filter} setFiler={setFiler} />
       </section>
-      <TodoComputed counter={count} clearCompleted={clearCompleted} />
+      <section className="container mx-auto px-4 mt-8  md:max-w-xl">
 
-      <footer className="text-center mt-8 dark:text-gray-400">Drag and drop to reorder list</footer>
+        <TodoComputed counter={count} clearCompleted={clearCompleted} />
+      </section>
+
+      <footer className="text-center mt-8 dark:text-gray-400 ">Drag and drop to reorder list</footer>
     </div>
   )
 }

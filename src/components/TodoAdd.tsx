@@ -22,10 +22,10 @@ const TodoAdd = ({ createTodo }: ITodoAdd) => {
     }
 
     return (
-        <div className="container mx-auto px-4 pt-8 " >
+        <div className="container mx-auto px-4 pt-8  md:max-w-xl" >
             <form onSubmit={handleSubmit} className="bg-white rounded-md p-3 my-8 flex gap-4 items-center  dark:bg-gray-800">
                 <span className="rounded-full border-2 border-zinc-300 w-5 h-5 inline-block"></span>
-                <input type="text" placeholder="Create a new todo" className="w-full outline-none text-gray-300  dark:bg-gray-800" value={title} onChange={e => setTitle(e.target.value)} />
+                <input type="text" placeholder="Create a new todo" className="w-full outline-none text-gray-800  dark:bg-gray-800 dark:text-gray-200" value={title} onChange={e => setTitle(e.target.value)} />
             </form>
         </div>
     )
