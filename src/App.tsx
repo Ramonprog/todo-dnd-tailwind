@@ -6,12 +6,22 @@ import TodoFilter from './components/TodoFilter'
 import TodoList from './components/TodoList'
 import { Item } from './types'
 import TodoComputed from './components/TodoComputed'
+import { DragDropContext } from "@hello-pangea/dnd";
+
 
 interface Todo {
   id: number;
   title: string;
   completed: boolean;
 }
+
+const reorder = (list: Todo[], startIndex: number, endIndex: number) => {
+  const result = [...list];
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 function App() {
 
@@ -62,13 +72,30 @@ function App() {
     localStorage.setItem('todo', JSON.stringify(todo))
   }, [todo])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleDragEnd = (result: any) => {
+    const { destination, source } = result;
+    if (!destination) return;
+    if (
+      source.index === destination.index &&
+      source.droppableId === destination.droppableId
+    )
+      return;
+
+    setTodo((prevTasks) =>
+      reorder(prevTasks, source.index, destination.index)
+    );
+  };
+
   return (
     <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-300  dark:bg-gray-950 md:bg-[url('./assets/images/bg-desktop-light.jpg')] md:dark:bg-[url('./assets/images/bg-desktop-dark.jpg')]">
       <Header />
       <TodoAdd createTodo={createTodo} />
 
       <main className="container mx-auto px-4 md:max-w-xl">
-        <TodoList todo={filterTodo} removeTodo={removeTodo} updateTodo={updateTodo} />
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <TodoList todo={filterTodo} removeTodo={removeTodo} updateTodo={updateTodo} />
+        </DragDropContext>
       </main>
 
       <section className="container mx-auto px-4 mt-8  md:max-w-xl">
